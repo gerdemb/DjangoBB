@@ -113,7 +113,7 @@ class Forum(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('djangobb:forum', [self.id])
+        return ('djangobb-forum', [self.id])
 
     @property
     def posts(self):
@@ -173,7 +173,7 @@ class Topic(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('djangobb:topic', [self.id])
+        return ('djangobb-topic', [self.id])
 
     def update_read(self, user):
         tracking = user.posttracking
@@ -253,7 +253,7 @@ class Post(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('djangobb:post', [self.id])
+        return ('djangobb-post', [self.id])
 
     def summary(self):
         LIMIT = 50
@@ -295,7 +295,7 @@ class ProfileManager(models.Manager):
 class Profile(models.Model):
     user = AutoOneToOneField(User, related_name='forum_profile', verbose_name=_('User'))
     status = models.CharField(_('Status'), max_length=30, blank=True)
-    site = models.URLField(_('Site'), verify_exists=False, blank=True)
+    site = models.URLField(_('Site'), blank=True)
     jabber = models.CharField(_('Jabber'), max_length=80, blank=True)
     icq = models.CharField(_('ICQ'), max_length=12, blank=True)
     msn = models.CharField(_('MSN'), max_length=80, blank=True)
@@ -405,7 +405,7 @@ class Attachment(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('djangobb:forum_attachment', [self.hash])
+        return ('djangobb-forum_attachment', [self.hash])
 
     def get_absolute_path(self):
         return os.path.join(settings.MEDIA_ROOT, forum_settings.ATTACHMENT_UPLOAD_TO,

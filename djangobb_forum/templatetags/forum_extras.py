@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 from django.utils.encoding import smart_unicode
 from django.db import settings
 from django.utils.html import escape
-from django.utils.hashcompat import md5_constructor
+from hashlib import md5
 from django.contrib.humanize.templatetags.humanize import naturalday
 
 from pagination.templatetags.pagination_tags import paginate
@@ -25,7 +25,7 @@ register = template.Library()
 @register.filter
 def profile_link(user):
     data = u'<a href="%s">%s</a>' % (\
-        reverse('djangobb:forum_profile', args=[user.username]), user.username)
+        reverse('djangobb-forum_profile', args=[user.username]), user.username)
     return mark_safe(data)
 
 
@@ -262,7 +262,7 @@ def gravatar(context, email):
         size = max(forum_settings.AVATAR_WIDTH, forum_settings.AVATAR_HEIGHT)
         url = 'https://secure.gravatar.com/avatar/%s?' if is_secure \
             else 'http://www.gravatar.com/avatar/%s?'
-        url = url % md5_constructor(email.lower()).hexdigest()
+        url = url % md5(email.lower()).hexdigest()
         url += urllib.urlencode({
             'size': size,
             'default': forum_settings.GRAVATAR_DEFAULT,

@@ -15,12 +15,12 @@ class TestLinkTags(TestCase):
 
     def test_profile_link(self):
         plink = profile_link(self.user)
-        self.assertEqual(plink, u"<a href=\"/forum/user/djangobb/\">djangobb</a>")
+        self.assertEqual(plink, u"<a href=\"/user/djangobb/\">djangobb</a>")
     
     def test_link(self):
         l = link(self.post)
-        self.assertEqual(l, "<a href=\"/forum/post/1/\">Test Body</a>")
+        self.assertEqual(l, "<a href=\"/post/1/\">Test Body</a>")
 
     def test_lofi_link(self):
         l = lofi_link(self.post)
-        self.assertEqual(l, "<a href=\"/forum/post/1/lofi/\">Test Body</a>")
+        self.assertEqual(l, "<a href=\"/post/1/lofi/\">Test Body</a>")
