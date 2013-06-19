@@ -90,17 +90,17 @@ def moderate(request, forum_id):
                 topic = get_object_or_404(Topic, pk=topic_id)
                 topic.delete()
             messages.success(request, _("Topics deleted"))
-            return HttpResponseRedirect(reverse('djangobb-index'))
+            return HttpResponseRedirect(reverse('djangobb_index'))
         elif 'open_topics' in request.POST:
             for topic_id in topic_ids:
                 open_close_topic(request, topic_id, 'o')
             messages.success(request, _("Topics opened"))
-            return HttpResponseRedirect(reverse('djangobb-index'))
+            return HttpResponseRedirect(reverse('djangobb_index'))
         elif 'close_topics' in request.POST:
             for topic_id in topic_ids:
                 open_close_topic(request, topic_id, 'c')
             messages.success(request, _("Topics closed"))
-            return HttpResponseRedirect(reverse('djangobb-index'))
+            return HttpResponseRedirect(reverse('djangobb_index'))
 
         return render(request, 'djangobb_forum/moderate.html', {'forum': forum,
                 'topics': topics,
@@ -260,7 +260,7 @@ def misc(request):
             user = request.user
             PostTracking.objects.filter(user__id=user.id).update(last_read=datetime.now(), topics=None)
             messages.info(request, _("All topics marked as read."))
-            return HttpResponseRedirect(reverse('djangobb-index'))
+            return HttpResponseRedirect(reverse('djangobb_index'))
 
         elif action == 'report':
             if request.GET.get('post_id', ''):
@@ -286,7 +286,7 @@ def misc(request):
                 messages.success(request, _("Email send."))
             except Exception:
                 messages.error(request, _("Email could not be sent."))
-            return HttpResponseRedirect(reverse('djangobb-index'))
+            return HttpResponseRedirect(reverse('djangobb_index'))
 
     elif 'mail_to' in request.GET:
         mailto = get_object_or_404(User, username=request.GET['mail_to'])
@@ -492,7 +492,7 @@ def upload_avatar(request, username, template=None, form_class=None):
         if request.method == 'POST' and form.is_valid():
             form.save()
             messages.success(request, _("Your avatar uploaded."))
-            return HttpResponseRedirect(reverse('djangobb-forum_profile', args=[user.username]))
+            return HttpResponseRedirect(reverse('djangobb_forum_profile', args=[user.username]))
         return render(request, template, {'form': form,
                 'avatar_width': forum_settings.AVATAR_WIDTH,
                 'avatar_height': forum_settings.AVATAR_HEIGHT,
@@ -511,7 +511,7 @@ def upload_avatar(request, username, template=None, form_class=None):
 def user(request, username, section='essentials', action=None, template='djangobb_forum/profile/profile_essentials.html', form_class=EssentialsProfileForm):
     user = get_object_or_404(User, username=username)
     if request.user.is_authenticated() and user == request.user or request.user.is_superuser:
-        profile_url = reverse('djangobb-forum_profile_%s' % section, args=[user.username])
+        profile_url = reverse('djangobb_forum_profile_%s' % section, args=[user.username])
         form = build_form(form_class, request, instance=user.forum_profile, extra_args={'request': request})
         if request.method == 'POST' and form.is_valid():
             form.save()
@@ -560,7 +560,7 @@ def reputation(request, username):
                 reputation = get_object_or_404(Reputation, pk=reputation_id)
                 reputation.delete()
             messages.success(request, _("Reputation deleted."))
-            return HttpResponseRedirect(reverse('djangobb-index'))
+            return HttpResponseRedirect(reverse('djangobb_index'))
         elif form.is_valid():
             form.save()
             post_id = request.POST['post']
@@ -580,7 +580,7 @@ def show_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     count = post.topic.posts.filter(created__lt=post.created).count() + 1
     page = math.ceil(count / float(forum_settings.TOPIC_PAGE_SIZE))
-    url = '%s?page=%d#post-%d' % (reverse('djangobb-topic', args=[post.topic.id]), page, post.id)
+    url = '%s?page=%d#post-%d' % (reverse('djangobb_topic', args=[post.topic.id]), page, post.id)
     return HttpResponseRedirect(url)
 
 
@@ -763,9 +763,9 @@ def delete_subscription(request, topic_id):
     topic.subscribers.remove(request.user)
     messages.info(request, _("Topic subscription removed."))
     if 'from_topic' in request.GET:
-        return HttpResponseRedirect(reverse('djangobb-topic', args=[topic.id]))
+        return HttpResponseRedirect(reverse('djangobb_topic', args=[topic.id]))
     else:
-        return HttpResponseRedirect(reverse('djangobb-forum_profile', args=[request.user.username]))
+        return HttpResponseRedirect(reverse('djangobb_forum_profile', args=[request.user.username]))
 
 
 @login_required
@@ -774,7 +774,7 @@ def add_subscription(request, topic_id):
     topic = get_object_or_404(Topic, pk=topic_id)
     topic.subscribers.add(request.user)
     messages.success(request, _("Topic subscribed."))
-    return HttpResponseRedirect(reverse('djangobb-topic', args=[topic.id]))
+    return HttpResponseRedirect(reverse('djangobb_topic', args=[topic.id]))
 
 
 @login_required

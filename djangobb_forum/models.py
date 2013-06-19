@@ -113,7 +113,7 @@ class Forum(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('djangobb-forum', [self.id])
+        return ('djangobb_forum', [self.id])
 
     @property
     def posts(self):
@@ -173,7 +173,7 @@ class Topic(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('djangobb-topic', [self.id])
+        return ('djangobb_topic', [self.id])
 
     def update_read(self, user):
         tracking = user.posttracking
@@ -253,7 +253,7 @@ class Post(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('djangobb-post', [self.id])
+        return ('djangobb_post', [self.id])
 
     def summary(self):
         LIMIT = 50
@@ -405,7 +405,7 @@ class Attachment(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('djangobb-forum_attachment', [self.hash])
+        return ('djangobb_forum_attachment', [self.hash])
 
     def get_absolute_path(self):
         return os.path.join(settings.MEDIA_ROOT, forum_settings.ATTACHMENT_UPLOAD_TO,

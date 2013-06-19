@@ -49,7 +49,7 @@ def notify_topic_subscribers(post):
                         'username': post.user.username,
                         'message': post_body_text,
                         'post_url': absolute_url(post.get_absolute_url()),
-                        'unsubscribe_url': absolute_url(reverse('djangobb-forum_delete_subscription', args=[post.topic.id])),
+                        'unsubscribe_url': absolute_url(reverse('djangobb_forum_delete_subscription', args=[post.topic.id])),
                     }
                 #html_content = html_version(post)
                 send_mail(subject, text_content, settings.DEFAULT_FROM_EMAIL, [to_email])
