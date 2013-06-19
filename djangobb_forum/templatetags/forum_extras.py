@@ -25,7 +25,7 @@ register = template.Library()
 @register.filter
 def profile_link(user):
     data = u'<a href="%s">%s</a>' % (\
-        reverse('djangobb-forum_profile', args=[user.username]), user.username)
+        reverse('djangobb_forum_profile', args=[user.username]), user.username)
     return mark_safe(data)
 
 
@@ -271,8 +271,9 @@ def gravatar(context, email):
     else:
         return ''
 
-@register.simple_tag
-def set_theme_style(user):
+@register.simple_tag(takes_context=True)
+def set_theme_style(context):
+    user = context['user']
     theme_style = ''
     selected_theme = ''
     if user.is_authenticated():
