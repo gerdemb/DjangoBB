@@ -501,7 +501,7 @@ def upload_avatar(request, username, template=None, form_class=None):
         topic_count = Topic.objects.filter(user__id=user.id).count()
         if user.forum_profile.post_count < forum_settings.POST_USER_SEARCH and not request.user.is_authenticated():
             messages.error(request, _("Please sign in."))
-            return HttpResponseRedirect(reverse('user_signin') + '?next=%s' % request.path)
+            return HttpResponseRedirect(reverse('login') + '?next=%s' % request.path)
         return render(request, template, {'profile': user,
                 'topic_count': topic_count,
                })
@@ -526,7 +526,7 @@ def user(request, username, section='essentials', action=None, template='djangob
         topic_count = Topic.objects.filter(user__id=user.id).count()
         if user.forum_profile.post_count < forum_settings.POST_USER_SEARCH and not request.user.is_authenticated():
             messages.error(request, _("Please sign in."))
-            return HttpResponseRedirect(reverse('user_signin') + '?next=%s' % request.path)
+            return HttpResponseRedirect(reverse('login') + '?next=%s' % request.path)
         return render(request, template, {'profile': user,
                 'topic_count': topic_count,
                })
