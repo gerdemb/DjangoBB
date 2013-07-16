@@ -5,7 +5,7 @@ from hashlib import sha1
 import os
 
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.db import models
 from django.db.models import aggregates
 from django.db.models.signals import post_save
@@ -14,6 +14,12 @@ from django.utils.translation import ugettext_lazy as _
 from djangobb_forum.fields import AutoOneToOneField, ExtendedImageField, JSONField
 from djangobb_forum.util import smiles, convert_text_to_html
 from djangobb_forum import settings as forum_settings
+
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+except ImportError:
+    from django.contrib.auth.models import User
 
 if 'south' in settings.INSTALLED_APPS:
     from south.modelsinspector import add_introspection_rules
